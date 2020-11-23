@@ -116,6 +116,8 @@ export default{
       options: {
         responsive: true,
         showAllTooltips: true,
+        maintainAspectRatio: false,
+
         //events: ['click'],
         onClick: this.changeBarData,   
         legend:{
@@ -172,14 +174,6 @@ export default{
     Loading,
     MySelect,
     BarSelect,
-  },
-  computed: {
-    changeDisable(){
-      if(isPush2 == false || isPush3 == false)
-      isPush = false;
-    }
-    
-
   },
      created(){
        axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/category")
@@ -468,6 +462,10 @@ export default{
 }
 .update-button{
   margin-top:10px;
+}
+
+@media screen and (max-width: 480px) {
+
 }
 
 </style>
