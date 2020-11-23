@@ -1,8 +1,10 @@
-# test
+# side-business-radar
 
 > A Vue.js project
 
-## Build Setup
+## Overview
+
+副業の種類の割合や収入を調査、閲覧できるアプリです
 
 ``` bash
 # install dependencies
