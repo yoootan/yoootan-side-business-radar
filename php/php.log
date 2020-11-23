@@ -1,0 +1,49 @@
+[03-Nov-2020 08:47:01 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function getAllCategory(), 0 passed in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 5 and exactly 1 expected in /Applications/MAMP/htdocs/vue-cli-test/test/php/database.php:122
+Stack trace:
+#0 /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php(5): getAllCategory()
+#1 {main}
+  thrown in /Applications/MAMP/htdocs/vue-cli-test/test/php/database.php on line 122
+[03-Nov-2020 08:48:00 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:48:01 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:48:52 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:48:52 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:49:48 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:49:48 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:53:21 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:53:21 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:53:34 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:53:34 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:53:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function int() in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php:7
+Stack trace:
+#0 {main}
+  thrown in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 7
+[03-Nov-2020 08:54:30 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:54:30 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:54:30 UTC] PHP Notice:  Array to string conversion in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 7
+[03-Nov-2020 08:54:30 UTC] PHP Warning:  explode() expects parameter 2 to be string, array given in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 7
+[03-Nov-2020 08:54:30 UTC] PHP Warning:  array_map(): Expected parameter 2 to be an array, null given in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 7
+[03-Nov-2020 08:54:32 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:54:32 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:54:32 UTC] PHP Notice:  Array to string conversion in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 7
+[03-Nov-2020 08:54:32 UTC] PHP Warning:  explode() expects parameter 2 to be string, array given in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 7
+[03-Nov-2020 08:54:32 UTC] PHP Warning:  array_map(): Expected parameter 2 to be an array, null given in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 7
+[03-Nov-2020 08:56:05 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:56:05 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:56:05 UTC] PHP Notice:  Undefined variable: data in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 9
+[03-Nov-2020 08:56:11 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:56:11 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:56:38 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:56:38 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:57:47 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:57:47 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:58:08 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:58:08 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:58:21 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:58:21 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:58:21 UTC] PHP Warning:  Use of undefined constant count - assumed 'count' (this will throw an Error in a future version of PHP) in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 6
+[03-Nov-2020 08:58:39 UTC] デバッグ：ユーザー情報を取得します。
+[03-Nov-2020 08:58:39 UTC] デバッグ：クエリ成功。
+[03-Nov-2020 08:58:39 UTC] PHP Warning:  Use of undefined constant count - assumed 'count' (this will throw an Error in a future version of PHP) in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 9
+[03-Nov-2020 08:58:39 UTC] PHP Warning:  Use of undefined constant count - assumed 'count' (this will throw an Error in a future version of PHP) in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 9
+[03-Nov-2020 08:58:39 UTC] PHP Warning:  Use of undefined constant count - assumed 'count' (this will throw an Error in a future version of PHP) in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 9
+[03-Nov-2020 08:58:39 UTC] PHP Warning:  Use of undefined constant count - assumed 'count' (this will throw an Error in a future version of PHP) in /Applications/MAMP/htdocs/vue-cli-test/test/php/api.php on line 9

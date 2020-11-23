@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "production": "side-business-radar",
+    "default": "side-business-radar"
+  }
+}
