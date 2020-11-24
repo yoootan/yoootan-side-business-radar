@@ -15,10 +15,10 @@
       <div class="chart-right">
       　<p>副業ごとの月収分布図</p>
         <div>{{ selectedData }}</div>
-        <Bar
-        :chart-data="BarDatas"
-        :options="BarOptions"
-        ref="barchild" />
+          <Bar
+          :chart-data="BarDatas"
+          :options="BarOptions"
+          ref="barchild" />
         <div class="select-form">
         <form action="" class="form">
        <label>あなたの副業を選択</label>
@@ -28,7 +28,6 @@
           :options="select_options"
           @update-index="reflectIndex"
           @valueselected="isDisabled"
-
         />
         <label class="label-buttom">副業の月収を選択</label>
         <BarSelect
@@ -358,6 +357,7 @@ export default{
     async distributionUpdate(){
       await axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/distribution/"+this.beforeName+"",)
       .then(res=>{
+      this.beforeBarCount.splice(0, this.beforeBarCount.length)
 
       for(let i = 0 ;i < 7 ;i ++){
          this.beforeBarCount.push(res.data.fields[i].integerValue);
@@ -410,6 +410,7 @@ export default{
          this.isPush = true;
          this.isPush2 = true;
          this.isPush3 = true;
+         
          //console.log(this.PieDatas)
         
     }
