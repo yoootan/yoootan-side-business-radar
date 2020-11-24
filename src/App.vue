@@ -126,7 +126,12 @@ export default{
           animateScale: true,
         },
         tooltips: {
-          bodyFontSize: 28,
+          bodyFontSize: 14,
+          itemSort: function(tooltipItem,data){
+             let indexItem = data.datasets[0].data[tooltipItem.index] 
+
+
+          },
           callbacks: {
             label: function(tooltipItem, data) {
               let total = 0 // 合計格納
