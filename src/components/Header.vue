@@ -37,7 +37,7 @@ export default{
 
 }
 </script>
-<style scoped>
+<style>
 .header-main{
     position:fixed;
     margin-top:auto;

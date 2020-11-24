@@ -126,21 +126,17 @@ export default{
           animateScale: true,
         },
         tooltips: {
+          bodyFontSize: 28,
           callbacks: {
             label: function(tooltipItem, data) {
               let total = 0 // 合計格納
-              
               let indexItem = data.datasets[0].data[tooltipItem.index] 
-              //console.log(data);
-              //console.log(tooltipItem);
-              // マウスを当てたデータ
-              // 全データの合計算出
               data.datasets[0].data.forEach(item => {
                 total += parseInt(item);
                 //console.log(total)
               })
               // パーセント表示
-              return Math.round(indexItem / total * 100) + ' %'
+              return [indexItem + ' 人',Math.round(indexItem / total * 100) + ' %']
             },
             
 
@@ -152,9 +148,19 @@ export default{
         scales: {
           xAxes: [{
             ticks: {
-              min: 0
+              min: 0,
+              callback: function(label,index,labels){
+                return label + ' 人';
+              }
             }
           }]
+        },
+        tooltips: {
+          callbacks: {
+             label: function (tooltipItem, data) {
+                return tooltipItem.xLabel + ' 人';
+            }
+          }
         },
         legend :{
           display: false,
