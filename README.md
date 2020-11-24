@@ -6,27 +6,16 @@
 
 副業の種類の割合や収入を調査、閲覧できるアプリです
 
-``` bash
-# install dependencies
-npm install
+使用言語はVue,プラグインはvue-cahartjsを使用しています
 
-# serve with hot reload at localhost:8080
-npm run dev
+DBはFirestoreを採用
 
-# build for production with minification
-npm run build
+## Point
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+難しかった点です
+
+・チャート同士を連動させてクリックで動的に変更するようにした
+・axiosによる非同期通信なので、処理の順番をasync,awaitで制御した
+・NoSQLを初めて使ったので仕様の違いに戸惑った、特にアップデート
+  (REST　API　を使用し少し強引に実装しました)
+・値を更新すると自動で再描写
