@@ -1,7 +1,7 @@
 <template>
 <div class="footer-main">
   <b-navbar toggleable="lg" type="dark" variant="info">
-    <p class="footer-logo" href="#">© 2020 yoootan side-business-radar</p>
+    <p class="footer-logo" href="#">© 2020 Yoshimori Kataoka side-business-radar</p>
   </b-navbar>
 </div>
 </template>
