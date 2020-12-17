@@ -6,7 +6,7 @@
         <p>みんなの副業の種類と割合</p>
 
         <Pie 
-        :chart-data="$store.state.PieDatas" 
+        :chart-data="this.getPieDatas" 
         :options="PieOptions" 
         ref="piechild"
         @on-receive="$store.dispatch('update')"
@@ -14,10 +14,10 @@
       </div>
       <div class="chart-right">
        <p>副業ごとの月収分布図</p>
-        <div>{{ $store.state.selectedData }}</div>
+        <div>{{ this.getSelectedData }}</div>
           <Bar
-          :chart-data="$store.state.BarDatas"
-          :options="$store.state.BarOptions"
+          :chart-data="this.getBarDatas"
+          :options="this.getBarOptions"
           ref="barchild" />
         <div class="select-form">
         <form action="" class="form">
@@ -42,12 +42,6 @@
      </div>
     </div>
     <Footer />
-
-      <!-- 
-        <p><router-link to="/articles/13">[no13]</router-link></p>
-      <router-view/>
-      <router-view name="sub" />
-      -->
   </div>
 </template>
 
@@ -63,11 +57,19 @@ import MySelect from "./components/Select";
 import BarSelect from "./components/BarSelect";
 import axios from "axios";
 import store from './store'
-
-
+import { mapGetters } from 'vuex'
 
 export default{
- 
+  name: 'App',
+  components: {
+    Header,
+    Footer,
+    Pie,
+    Bar,
+    Loading,
+    MySelect,
+    BarSelect,
+  },
   data(){
     return{
       PieOptions: {
@@ -87,8 +89,6 @@ export default{
           bodyFontSize: 18,
           itemSort: function(tooltipItem,data){
              let indexItem = data.datasets[0].data[tooltipItem.index] 
-
-
           },
           callbacks: {
             label: function(tooltipItem, data) {
@@ -106,129 +106,45 @@ export default{
       },  
     }
   },
-  name: 'App',
-  components: {
-    Header,
-    Footer,
-    Pie,
-    Bar,
-    Loading,
-    MySelect,
-    BarSelect,
+  computed: {
+    ...mapGetters(
+      [
+    "getSelectedData",
+    "getPieDatas",
+    "getBarDatas",
+    "getBarOptions",
+    "getSampleForm",
+    "getSampleBarForm",
+    "getSelectOptions",
+    "getSelectBarOptions"
+      ]
+    ),
   },
-     created(){
-       axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/category")
-      .then(res=>{
-
-        this.labelContents = res.data.documents;
-        //Pie用のデータ取得(axios rest api)
-        const dataCount = [];
-        this.labelContents.forEach(function (content){
-          dataCount.push(content.fields.count.integerValue)
-        });
-        this.$store.state.PieDatas.datasets[0].data = dataCount;
-        //console.log(dataCount);
-
-        //label用データ取得後、配列へ代入
-        const labelData = [];
-        this.labelContents.forEach(function (content){
-          labelData.push(content.fields.name.stringValue)
-        });
-        this.$store.state.PieDatas.labels = labelData;
-         //selectcomponent用の表示データ取得
-        
-
-        const selectData = [];
-        this.labelContents.forEach(function (content){
-          selectData.push(content)
-        });
-        this.$store.state.select_options = selectData;
-        console.log(this.$store.state.select_options)
-
-        Vue.set(this.$store.state.PieDatas);
-
-        
-      });
-      //Bar用データ取得
-     axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/distribution")
-      .then(res=>{
-           this.barContents = res.data.documents;
-           //console.log(this.barContents)
-           const barCount = [];
-           const barCounted = [];
-        this.barContents.forEach(function (content){
-          barCount.push(content.fields)
-          
-        });
-       for(let i = 0 ; i < 7 ;i ++){
-         barCounted.push(barCount[0][i].integerValue);
-       }
-        this.$store.state.BarDatas.datasets[0].data = barCounted;
-
-       /* const selectBarData = [];
-        this.barContents.forEach(function (content){
-          selectBarData.push(content)
-        });
-        this.$store.state.select_bar_options = selectBarData;
-        console.log(this.$store.state.select_bar_options)
-        */
-                Vue.set(this.$store.state.BarDatas);
-      })
+  created(){
+       store.dispatch('createPieData')
+       store.dispatch('createBarData')
     },
   methods: {
-   
-   
-    
-    
-    changeBarData(e,el){
+    async changeBarData(e,el){
       if (! el || el.length === 0) return;
-            //console.log('onClick : label ' + el[0]._model.label);
-            this.$store.state.selectedData = el[0]._model.label;
-          //console.log(this.$store.state.selectedData)
+          this.$store.state.selectedData = el[0]._model.label;
+          await store.dispatch('changeBarData')
+          
+          await this.$refs.barchild.rerenderBarchart();
 
-          axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/distribution/"+this.$store.state.selectedData+"")
-      .then(res=>{
-           this.barContents = res.data.fields;
-           //console.log(this.barContents)
-           const barCountOnClick = [];
-           for(let i = 0;i < 7 ; i ++){
-           barCountOnClick.push(this.barContents[i].integerValue)
-        };
-                   //console.log(barCountOnClick);
-                   
-                   this.$store.state.BarDatas.datasets[0].data = barCountOnClick;
-                   //console.log(this.$store.state.BarDatas.datasets[0].data)
-      
-                Vue.set(this.$store.state.BarDatas);
-                this.$refs.barchild.rerenderBarchart();
-      })
     },
-    
-    
       async countUpdate() {
-      
          await store.dispatch('categoryUpdate');
          await store.dispatch('distributionUpdate')
          await store.dispatch('getCategoryData')
          await store.dispatch('getBarData')
          await this.$refs.piechild.rerenderchart();
          await this.$refs.barchild.rerenderBarchart();
-
-         store.commit('isPushReset');
-
-         
-         //console.log(this.$store.state.PieDatas)
-        
+         store.dispatch('isPushReset');
     }
   }, 
-    mounted() {
-    setTimeout(() => {
-      this.loading = false;
-    }, 1500);
-  },
 }
 </script>
-
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -270,9 +186,4 @@ export default{
 .update-button{
   margin-top:10px;
 }
-
-@media screen and (max-width: 480px) {
-
-}
-
 </style>

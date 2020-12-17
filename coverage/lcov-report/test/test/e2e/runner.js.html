@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for test/test/e2e/runner.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">All files</a> / <a href="index.html">test/test/e2e</a> runner.js
+    </h1>
+    <div class='clearfix'>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// 1. start the dev server using production config
+<span class="cstat-no" title="statement not covered" >process.env.NODE_ENV = 'testing'</span>
+&nbsp;
+const webpack = <span class="cstat-no" title="statement not covered" >require('webpack')</span>
+const DevServer = <span class="cstat-no" title="statement not covered" >require('webpack-dev-server')</span>
+&nbsp;
+const webpackConfig = <span class="cstat-no" title="statement not covered" >require('../../build/webpack.prod.conf')</span>
+const devConfigPromise = <span class="cstat-no" title="statement not covered" >require('../../build/webpack.dev.conf')</span>
+&nbsp;
+let server
+&nbsp;
+<span class="cstat-no" title="statement not covered" >devConfigPromise.then(<span class="fstat-no" title="function not covered" >de</span>vConfig =&gt; {</span>
+  const devServerOptions = <span class="cstat-no" title="statement not covered" >devConfig.devServer</span>
+  const compiler = <span class="cstat-no" title="statement not covered" >webpack(webpackConfig)</span>
+<span class="cstat-no" title="statement not covered" >  server = new DevServer(compiler, devServerOptions)</span>
+  const port = <span class="cstat-no" title="statement not covered" >devServerOptions.port</span>
+  const host = <span class="cstat-no" title="statement not covered" >devServerOptions.host</span>
+<span class="cstat-no" title="statement not covered" >  return server.listen(port, host)</span>
+})
+.then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+  // 2. run the nightwatch test suite against it
+  // to run in additional browsers:
+  //    1. add an entry in test/e2e/nightwatch.conf.js under "test_settings"
+  //    2. add it to the --env flag below
+  // or override the environment flag, for example: `npm run e2e -- --env chrome,firefox`
+  // For more information on Nightwatch's config file, see
+  // http://nightwatchjs.org/guide#settings-file
+  let opts = <span class="cstat-no" title="statement not covered" >process.argv.slice(2)</span>
+<span class="cstat-no" title="statement not covered" >  if (opts.indexOf('--config') === -1) {</span>
+<span class="cstat-no" title="statement not covered" >    opts = opts.concat(['--config', 'test/e2e/nightwatch.conf.js'])</span>
+  }
+<span class="cstat-no" title="statement not covered" >  if (opts.indexOf('--env') === -1) {</span>
+<span class="cstat-no" title="statement not covered" >    opts = opts.concat(['--env', 'chrome'])</span>
+  }
+&nbsp;
+  const spawn = <span class="cstat-no" title="statement not covered" >require('cross-spawn')</span>
+  const runner = <span class="cstat-no" title="statement not covered" >spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' })</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  runner.on('exit', <span class="fstat-no" title="function not covered" >fu</span>nction (code) {</span>
+<span class="cstat-no" title="statement not covered" >    server.close()</span>
+<span class="cstat-no" title="statement not covered" >    process.exit(code)</span>
+  })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  runner.on('error', <span class="fstat-no" title="function not covered" >fu</span>nction (err) {</span>
+<span class="cstat-no" title="statement not covered" >    server.close()</span>
+<span class="cstat-no" title="statement not covered" >    throw err</span>
+  })
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Dec 14 2020 16:59:39 GMT+0900 (GMT+09:00)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

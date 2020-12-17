@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from "axios";
-
+import axios from "axios"
 
 Vue.use(Vuex)
+import getters from './stores/getters'
+
 
 export default new Vuex.Store({
   state: {
@@ -19,8 +20,18 @@ export default new Vuex.Store({
     barBeforeUpdateCount: "",
     categoryResData: [],
     dataCount:[],
+    pieDataCount: [],
+    pieLabelData: [],
+    pieSelectData: [],
     barCount: [],
+    barCounted: [],
+    barContents: [],
+    changeBarContents: [],
+    barNumber: [],
     barResData: [],
+    getBarContents: [],
+    pieLabelContents: [],
+    labelContents: [],
     updateIndex: "",
     selectedData: "YouTube",
     sampleForm: "",
@@ -30,9 +41,7 @@ export default new Vuex.Store({
      select_options: [],
      select_bar_options: ['100万以上', '50-100万', '30-50万', '20-30万', '10-20万', '5-10万', '5万以下'],
      PieDatas: {
-      // 凡例とツールチップに表示するラベル
       labels: [],
-      // 表示するデータ
       datasets: [
         {
           data: [],
@@ -47,12 +56,9 @@ export default new Vuex.Store({
         {
           data: [],
           backgroundColor: ['#f87979','#f87979','#f87979','#f87979','#f87979','#f87979','#f87979',]
-
         }
       ]      
       },
-
-      
       BarOptions: {
         responsive: true,
         scales: {
@@ -77,9 +83,18 @@ export default new Vuex.Store({
           display: false,
         }
       },
-      
-      
     },
+    getters: {
+      getSelectedData: state => state.selectedData,
+      getPieDatas: state => state.PieDatas,
+      getBarDatas: state => state.BarDatas,
+      getBarOptions: state => state.BarOptions,
+      getSampleForm: state => state.sampleForm,
+      getSampleBarForm: state => state.sampleBarForm,
+      getSelectOptions: state => state.select_options,
+      getSelectBarOptions: state => state.select_bar_options, 
+  },
+ 
   mutations: {
     isDisabled(state){
       state.isPush = false;
@@ -95,7 +110,12 @@ export default new Vuex.Store({
       state.isPush2 = true;
       state.isPush3 = true;
     },
-    setBarData(state){
+    getBarData(state){
+         //console.log(  barContents)
+         state.getBarContents.forEach(function (content){
+         state.barCount.push(content.fields)
+        });
+        console.log(state.barCount);
       var barCounted = [];
       for(let i = 0 ; i < 7 ;i ++){
         barCounted.push(state.barCount[state.sampleForm][i].integerValue);
@@ -103,9 +123,17 @@ export default new Vuex.Store({
       console.log(barCounted);
        state.BarDatas.datasets[0].data = barCounted;
        state.selectedData = state.beforeName;
+       state.barCount = [];
     },
-    setPieDatas(state){
+    getCategoryData(state){
       state.PieDatas.datasets[0].data = state.dataCount;
+      console.log(state.dataCount);
+      //Pie用のデータ取得(axios rest api)
+      state.labelContents.forEach(function (content){
+        state.dataCount.push(content.fields.count.integerValue)
+      });
+      Vue.set(state.BarDatas);
+      state.dataCount = [];
     },
     barDataReset(state){
       state.beforeBarCount.splice(0, state.beforeBarCount.length);
@@ -117,12 +145,8 @@ export default new Vuex.Store({
         state.barBeforeUpdateCount = state.beforeBarCount[state.sampleBarForm]
         state.barBeforeUpdateCount ++;
         state.beforeBarCount.splice(state.sampleBarForm,1,state.barBeforeUpdateCount)
-        //state.beforeCount ++;
         console.log(state.beforeBarCount);//bar配列
-        //console.log(state.beforeBarCount[1]);//bar配列
-        //console.log(state.sampleBarForm);//index
-        //console.log(state.barBeforeUpdateCount);//変更値
-        //console.log(state.PieDatas.datasets[0].data);
+  
     },
     update(state,data){
       state.selectedData = data
@@ -136,12 +160,50 @@ export default new Vuex.Store({
       state.beforeName = state.categoryResData.data.fields.name.stringValue;
       state.beforeCount ++;
       console.log(state.beforeCount);
-      //console.log(this.$store.state.PieDatas.datasets[0].data);
-   
-
-    }
-
-
+    },
+    createPieData(state){
+        //Pie用のデータ取得(axios rest api)
+      state.pieLabelContents.forEach(function (content){
+         state.pieDataCount.push(content.fields.count.integerValue)
+       });
+      state.PieDatas.datasets[0].data = state.pieDataCount;
+      state.pieDataCount = [];
+      console.log(state.pieDataCount)
+    },
+    createPieLabelData(state){
+        //label用データ取得後、配列へ代入
+        state.pieLabelContents.forEach(function (content){
+          state.pieLabelData.push(content.fields.name.stringValue)
+        });
+        state.PieDatas.labels = state.pieLabelData;
+        state.pieLabelData = [];
+    },
+    createSelectData(state){
+      //selectcomponent用の表示データ取得
+      state.pieLabelContents.forEach(function (content){
+        state.pieSelectData.push(content)
+      });
+      state.select_options = state.pieSelectData;
+      console.log(state.select_options)
+      state.pieSelectData = [];
+    },
+    createBarData(state){
+      state.barContents.forEach(function (content){
+        state.barNumber.push(content.fields)
+      });
+     for(let i = 0 ; i < 7 ;i ++){
+       state.barCounted.push(state.barNumber[0][i].integerValue);
+     }
+       state.BarDatas.datasets[0].data = state.barCounted;
+    },
+    changeBarData(state){
+      const barCountOnClick = [];
+      for(let i = 0;i < 7 ; i ++){
+      barCountOnClick.push(state.changeBarContents[i].integerValue)
+      };
+      state.BarDatas.datasets[0].data = barCountOnClick;
+      console.log(state.BarDatas.datasets[0].data)
+    },
   },
   actions: {
     update ({commit}) {
@@ -150,8 +212,10 @@ export default new Vuex.Store({
     reflectIndex({commit}){
       commit('reflectIndex')  
     },
+    isPushReset({commit}){
+      commit('isPushReset')
+    },
     setSelected({commit,state},num){
-
       if(num === 1){
       commit('isDisabled2',false)
       if(state.isPush3 == false)
@@ -222,47 +286,49 @@ export default new Vuex.Store({
           }
          ) 
     },
-    async getCategoryData({commit,state}){
-      await axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/category")
+    getCategoryData({commit,state}){
+       axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/category")
       .then(res=>{
-        
-       
-        const labelContents = res.data.documents;
-        
-        console.log(labelContents);
-        //Pie用のデータ取得(axios rest api)
-        labelContents.forEach(function (content){
-          state.dataCount.push(content.fields.count.integerValue)
-        });
-        commit('setPieDatas')
-        Vue.set(state.PieDatas);
-        state.dataCount = [];
-
-
+        state.labelContents = res.data.documents;
+        commit('getCategoryData')
       })
-      
-
     },
-    async getBarData({commit,state}){
-
-      await axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/distribution")
+    getBarData({commit,state}){
+      axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/distribution")
       .then(res=>{
-           const barContents = res.data.documents;
-
-           //console.log(  barContents)
-          barContents.forEach(function (content){
-          state.barCount.push(content.fields)
-        });
-        console.log(state.barCount);
-        commit('setBarData')       
-        Vue.set(state.BarDatas);
-        state.barCount = [];
-
+           state.getBarContents = res.data.documents;
+        commit('getBarData')       
       })
-    }
+    },
+    createPieData({commit,state}){
+      axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/category")
+      .then(res=>{
+        state.pieLabelContents = res.data.documents;
+        commit('createPieData')
+        commit('createPieLabelData')
+        commit('createSelectData')
+        Vue.set(state.PieDatas);
+      });
+    },
+    createBarData({commit,state}){
+      axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/distribution")
+      .then(res=>{
+           state.barContents = res.data.documents;
+           commit('createBarData')
+           Vue.set(state.BarDatas);
+      })
+    },
+    changeBarData({commit,state}){
+      axios.get("https://firestore.googleapis.com/v1/projects/side-business-radar/databases/(default)/documents/distribution/"+state.selectedData+"")
+      .then(res=>{
+           state.changeBarContents = res.data.fields;
+           console.log(state.changeBarContents)
+           commit('changeBarData')
+           Vue.set(state.BarDatas);
+      })
+    },
   },
-   
- 
   modules: {
+    getters,
   }
 })
