@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     updateValue: function(e) {
-      this.$emit("input", e.target.value);
+      this.$store.dispatch('getSampleForm',e.target.value);
             console.log(e.target.selectedIndex)
       this.$emit('valueselected');
 

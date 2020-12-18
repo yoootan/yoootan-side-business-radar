@@ -6,7 +6,7 @@
         <p>みんなの副業の種類と割合</p>
 
         <Pie 
-        :chart-data="this.getPieDatas" 
+        :chart-data="getPieDatas" 
         :options="PieOptions" 
         ref="piechild"
         @on-receive="$store.dispatch('update')"
@@ -14,26 +14,26 @@
       </div>
       <div class="chart-right">
        <p>副業ごとの月収分布図</p>
-        <div>{{ this.getSelectedData }}</div>
+        <div>{{ getSelectedData }}</div>
           <Bar
-          :chart-data="this.getBarDatas"
-          :options="this.getBarOptions"
+          :chart-data="getBarDatas"
+          :options="getBarOptions"
           ref="barchild" />
         <div class="select-form">
         <form action="" class="form">
        <label>あなたの副業を選択</label>
         <MySelect
-          v-model="$store.state.sampleForm"
+          v-model="getSampleForm"
           name="sample-select"
-          :options="$store.state.select_options"
+          :options="getSelectOptions"
           @update-index="$store.dispatch('reflectIndex')"
           @valueselected="$store.dispatch('setSelected',1)"
         />
         <label class="label-buttom">副業の月収を選択</label>
         <BarSelect
-          v-model="$store.state.sampleBarForm"
+          v-model="getSampleBarForm"
           name="sample-bar-select"
-          :options="$store.state.select_bar_options"
+          :options="getSelectBarOptions"
           @barselected="$store.dispatch('setSelected',2)"
         />
         <button class="update-button" type="button" :disabled="this.$store.state.isPush" @click="countUpdate">決定</button>
@@ -113,12 +113,28 @@ export default{
     "getPieDatas",
     "getBarDatas",
     "getBarOptions",
-    "getSampleForm",
     "getSampleBarForm",
     "getSelectOptions",
     "getSelectBarOptions"
       ]
     ),
+    getSampleForm: {
+      get(){
+        return this.$store.getters.getSampleForm
+      },
+      set(value){
+        this.$store.dispatch('getSampleForm',sampleForm)
+      }
+    },
+    getSampleBarForm: {
+      get(){
+        return this.$store.getters.getSampleBarForm
+      },
+      set(value){
+        this.$store.dispatch('getSampleBarForm',sampleBarForm)
+      }
+    },
+
   },
   created(){
        store.dispatch('createPieData')
@@ -146,44 +162,5 @@ export default{
 }
 </script>
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  display:flex;
-  flex-flow: column;
-  min-height: 120vh;
-  
-}
-.chart{
-  margin-top:20px;
-  width: 100%;
-  height:500px;
-}
-.chart-left{
-  margin-left:10px;
-  margin-top:10px;
-  width:50%;
-  float:left;
-}
-.chart-right{
-  width:35%;
-  float:right;
-  margin-top:10px;
-  margin-right:20px;
-}
-.form{
-  height:100px;
-}
-.select-form{
-  margin-top:20px;
-}
-.label-buttom{
-  margin-top:15px;
-}
-.update-button{
-  margin-top:10px;
-}
+@import "./css/styles.css";
 </style>
